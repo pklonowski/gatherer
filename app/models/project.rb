@@ -1,16 +1,24 @@
 class Project < ApplicationRecord
+  include Sizeable
+
   has_many :tasks, dependent: :destroy
-  
+
+  validates :name, presence: true
+
   def self.velocity_length_in_days
     21
   end
-  
+
   def incomplete_tasks
     tasks.reject(&:complete?)
   end
 
   def done?
     incomplete_tasks.empty?
+  end
+
+  def size
+    total_size
   end
 
   def total_size
@@ -20,11 +28,11 @@ class Project < ApplicationRecord
   def remaining_size
     incomplete_tasks.sum(&:size)
   end
-  
+
   def completed_velocity
     tasks.sum(&:points_toward_velocity)
   end
-  
+
   def current_rate
     completed_velocity * 1.0 / Project.velocity_length_in_days
   end
