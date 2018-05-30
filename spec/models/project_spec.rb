@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Project do
   it_should_behave_like "sizeable"
-  
+
   describe "beginning" do
     let(:project) { Project.new }
     let(:task) { Task.new }
@@ -42,10 +42,13 @@ RSpec.describe Project do
     end
     
     it "can calculate total size" do
-      expect(project.total_size).to eq(10)
+      #expect(project.total_size).to eq(10)
+      expect(project).to be_of_size(10)
+      expect(project).not_to be_of_size(5)
     end
     it "can calculate remaining size" do
-      expect(project.remaining_size).to eq(5)
+      #expect(project.remaining_size).to eq(5)
+      expect(project).to be_of_size(5).for_incomplete_tasks_only
     end
     it "knows its velocity" do
       expect(project.completed_velocity).to eq(3)
